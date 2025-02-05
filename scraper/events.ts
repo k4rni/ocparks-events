@@ -1,35 +1,34 @@
-import { DOMParser } from "https://deno.land/x/deno_dom/deno-dom-wasm.ts";
+import { DOMParser } from "jsr:@b-fuze/deno-dom";
+import { Event } from "./types.ts";
 
-export async function fetchEventData() {
-  const url = "https://ocparks.com/events";
+export async function fetchEvents() {
+  try {
+    const res = await fetch("https://ocparks.com/events");
+    const content = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, "text/html");
 
-  // Step 1: Fetch the page HTML
-  const response = await fetch(url);
-  const html = await response.text();
+    const scriptTag = doc.querySelector(
+      'script[data-drupal-selector="drupal-settings-json"]'
+    );
 
-  // Step 2: Parse the HTML
-  const doc = new DOMParser().parseFromString(html, "text/html");
-  if (!doc) throw new Error("Failed to parse HTML");
+    if (scriptTag && scriptTag.textContent) {
+      const jsonData = JSON.parse(scriptTag.textContent);
+      const result =
+        JSON.parse(jsonData?.fullCalendarView?.[0].calendar_options) || {};
 
-  // Step 3: Locate the script tag containing JSON
-  const scriptTag = doc.querySelector(
-    'script[data-drupal-selector="drupal-settings-json"]'
-  );
-  if (!scriptTag) throw new Error("Script tag with JSON data not found");
-
-  // Step 4: Parse JSON content from the script tag
-  const jsonContent = scriptTag.textContent;
-  const jsonData = JSON.parse(jsonContent);
-
-  // Step 5: Extract relevant event data
-  const events = jsonData?.fullCalendarView?.[0]?.events || [];
-  const extractedEvents = events.map((event: any) => ({
-    title: event.title || "Unknown Title",
-    start: event.startField || "Unknown Start Time",
-    end: event.field_start_date || "Unknown End Time",
-    url: event.url || null,
-    location: event.location || "Unknown Location",
-  }));
-
-  return extractedEvents;
+      return result.events.map((event: Event) => ({
+        title: event.title || "Unknown Title",
+        start: event.start || "Unknown Start Time",
+        end: event.end || "Unknown End Time",
+        url: event.url || null,
+        location: event.location || "Unknown Location",
+      }));
+    } else {
+      throw new Error("JSON data not found.");
+    }
+  } catch (error) {
+    console.error("Error fetching events:", error);
+    return [];
+  }
 }
