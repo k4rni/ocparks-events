@@ -4,4 +4,6 @@ export interface Event {
   end: string;
   url: string | null;
   location: string;
+  description: string;
+  image: string;
 }

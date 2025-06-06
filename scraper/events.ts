@@ -1,5 +1,6 @@
 import { DOMParser } from "jsr:@b-fuze/deno-dom";
 import { Event } from "./types.ts";
+import { fetchEventDetails } from "./links.ts";
 
 export async function fetchEvents() {
   try {
@@ -17,13 +18,29 @@ export async function fetchEvents() {
       const result =
         JSON.parse(jsonData?.fullCalendarView?.[0].calendar_options) || {};
 
-      return result.events.map((event: Event) => ({
-        title: event.title || "Unknown Title",
-        start: event.start || "Unknown Start Time",
-        end: event.end || "Unknown End Time",
-        url: event.url || null,
-        location: event.location || "Unknown Location",
-      }));
+      const events = await Promise.all(
+        result.events.map(async (event: Event) => {
+          const details = event.url
+            ? await fetchEventDetails("https://ocparks.com" + event.url)
+            : {
+                location: "Unknown location",
+                description: "Unknown description",
+                image: "Unknown image",
+              };
+
+          return {
+            title: event.title || "Unknown title",
+            start: event.start || "Unknown start time",
+            end: event.end || "Unknown end time",
+            url: event.url || null,
+            location: details.location,
+            description: details.description,
+            image: details.image,
+          };
+        })
+      );
+
+      return events;
     } else {
       throw new Error("JSON data not found.");
     }
