@@ -1,26 +1,13 @@
-import { Hono } from "hono";
-import { fetchEvents } from "./scraper/events.ts";
+/// <reference no-default-lib="true" />
+/// <reference lib="dom" />
+/// <reference lib="dom.iterable" />
+/// <reference lib="dom.asynciterable" />
+/// <reference lib="deno.ns" />
 
-const app = new Hono();
+import "$std/dotenv/load.ts";
 
-app.get("/", async (c) => {
-  const events = await fetchEvents();
-  return c.json(events, events.length > 0 ? 200 : 500);
-});
+import { start } from "$fresh/server.ts";
+import manifest from "./fresh.gen.ts";
+import config from "./fresh.config.ts";
 
-Deno.serve(app.fetch);
-
-// import { Hono } from "hono";
-
-// const app = new Hono();
-
-// app.get("/", async (c) => {
-//   const res = await fetch(
-//     "https://ocparks.com/events/growing-together-native-seed-farm-10"
-//   );
-//   const content = await res.text();
-
-//   return c.text(content);
-// });
-
-// Deno.serve(app.fetch);
+await start(manifest, config);
