@@ -1,4 +1,6 @@
 import { type PageProps } from "$fresh/server.ts";
+import "$fresh/runtime.ts";
+
 export default function App({ Component }: PageProps) {
   return (
     <html>
