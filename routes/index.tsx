@@ -27,7 +27,7 @@ export default function Home({ data }: PageProps<Data>) {
               📍 <strong>{event.location}</strong>
             </p>
             <p>
-              🗓️ {event.start} – {event.end}
+              🗓️ {event.datetime}
             </p>
             {event.image !== "Unknown image" && (
               <img src={event.image} class="mt-2 max-w-full h-auto" />
