@@ -1,20 +1,23 @@
 body {
   font-family: "Lexend";
-  background-color: #f9f9f9;
   margin: 0;
   padding: 2rem;
 }
 
 .container {
-  max-width: 768px;
+  /* max-width: 768px; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 0 auto;
   background: white;
 }
 
 h1 {
   font-size: 56px;
-  font-weight: 200;
+  font-weight: 300;
   text-align: center;
+  width: 835px;
 }
 
 .event-list {
@@ -24,23 +27,45 @@ h1 {
 }
 
 .event-card {
-  border: 1px solid #ddd;
-  padding: 1rem;
-  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  height: 225px;
+  width: 1100px;
+  border-radius: 12px;
   margin-bottom: 1rem;
-  background-color: #fff;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  background-color: #efefef;
 }
 
 .event-card h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 300;
+  margin: 0;
 }
 
 .event-card img {
-  max-width: 100%;
-  height: auto;
-  margin-top: 0.5rem;
+  width: 225px;
+  height: 200px;
+  border-radius: 12px;
+  margin: 1em;
+}
+
+.info {
+  font-weight: 400;
+  font-size: 15px;
+}
+
+.description {
+  font-weight: 300;
+  font-size: 15px;
+  max-height: 40px;
+  width: 600px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  margin: 0;
 }
 
 .event-card a {
