@@ -33,7 +33,7 @@ export default function Home({ data }: PageProps<Data>) {
 
   return (
     <div class="container">
-      <h1>OC Parks Events</h1>
+      <h1>Discover and Explore OC Parks Events with Smart Filtering</h1>
       <ul class="event-list">
         {events.map((event) => (
           <li class="event-card" key={event.url}>

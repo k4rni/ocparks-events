@@ -1,5 +1,5 @@
 body {
-  font-family: sans-serif;
+  font-family: "Lexend";
   background-color: #f9f9f9;
   margin: 0;
   padding: 2rem;
@@ -12,8 +12,9 @@ body {
 }
 
 h1 {
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 56px;
+  font-weight: 200;
+  text-align: center;
 }
 
 .event-list {
