@@ -9,20 +9,19 @@ export async function fetchEventDetails(url: string) {
 
     if (!doc) throw new Error("Failed to parse event page");
 
-    const location =
-      doc
-        .querySelector(".address")
-        ?.textContent?.trim()
-        .split("\n")
-        .join(", ") || "Unknown location";
+    const location = doc
+      .querySelector(".address")
+      ?.textContent?.trim()
+      .split("\n")
+      .join(", ") || "Unknown location";
 
     const articles = doc.querySelectorAll("article.node");
     const descriptionArticle = articles[1];
     const description = descriptionArticle
       ? Array.from(descriptionArticle.querySelectorAll("p"))
-          .map((p) => p.textContent?.trim() || "")
-          .filter(Boolean)
-          .join("\n\n")
+        .map((p) => p.textContent?.trim() || "")
+        .filter(Boolean)
+        .join("\n\n")
       : "Unknown description";
 
     const relativeSrc = doc.querySelector("picture img")?.getAttribute("src");

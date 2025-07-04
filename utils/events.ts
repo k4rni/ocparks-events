@@ -4,29 +4,31 @@ import { fetchEventDetails } from "./links.ts";
 
 function formatEventDateRange(startStr: string, endStr: string): string {
   const start = new Date(startStr);
-  const end   = new Date(endStr);
+  const end = new Date(endStr);
 
   const dateFmt = new Intl.DateTimeFormat("en-US", {
     weekday: "long",
-    year:    "numeric",
-    month:   "long",
-    day:     "numeric",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
   const timeFmt = new Intl.DateTimeFormat("en-US", {
-    hour:   "numeric",
+    hour: "numeric",
     minute: "2-digit",
     hour12: true,
   });
 
-  return `${dateFmt.format(start)} at ${timeFmt.format(start)} – ${timeFmt.format(end)}`;
+  return `${dateFmt.format(start)} at ${timeFmt.format(start)} – ${
+    timeFmt.format(end)
+  }`;
 }
 
 export async function fetchEvents() {
   try {
-    const res     = await fetch("https://ocparks.com/events");
+    const res = await fetch("https://ocparks.com/events");
     const content = await res.text();
-    const parser  = new DOMParser();
-    const doc     = parser.parseFromString(content, "text/html");
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, "text/html");
 
     const scriptTag = doc.querySelector(
       'script[data-drupal-selector="drupal-settings-json"]',
@@ -35,7 +37,7 @@ export async function fetchEvents() {
     if (!scriptTag?.textContent) throw new Error("JSON data not found.");
 
     const jsonData = JSON.parse(scriptTag.textContent);
-    const result   = JSON.parse(
+    const result = JSON.parse(
       jsonData?.fullCalendarView?.[0].calendar_options,
     ) || {};
 
@@ -52,10 +54,10 @@ export async function fetchEvents() {
           const details = event.url
             ? await fetchEventDetails("https://ocparks.com" + event.url)
             : {
-                location: "Unknown location",
-                description: "Unknown description",
-                image: "Unknown image",
-              };
+              location: "Unknown location",
+              description: "Unknown description",
+              image: "Unknown image",
+            };
 
           return {
             title: event.title ?? "Unknown title",

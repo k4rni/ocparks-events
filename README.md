@@ -1,9 +1,9 @@
 # Current Progress
-![alt text](image.png)
+
+![alt text](image-1.png)
 
 ## TODO
-- Redefine time/date (scrape individual links)
-- Pull data starting from today
-- Don't print all the information in one page
+
 - Develop frontend ui/ux
 - Create tags (potentially use AI)
+- Update the data once a day
