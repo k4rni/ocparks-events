@@ -1,0 +1,29 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  color: black;
+}
+
+.navbar-title {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  margin: 0;
+  width: auto;
+  text-decoration: none;
+  color: black;
+  text-align: center;
+}
+
+.navbar-link {
+  font-size: 16px;
+  background-color: black;
+  color: white;
+  border: black solid 1px;
+  border-radius: 100px;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  text-align: center;
+  /* margin-right: 1rem; */
+}

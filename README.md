@@ -1,9 +1,9 @@
 # Current Progress
 
-![alt text](image-1.png)
+![alt text](image-2.png)
 
 ## TODO
 
-- Develop frontend ui/ux
-- Create tags (potentially use AI)
-- Update the data once a day
+- Create tags using tinyllama and hugging face
+- Create button component
+- Scale to mobile mode
