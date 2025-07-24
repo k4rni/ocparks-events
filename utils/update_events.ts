@@ -7,12 +7,12 @@ const updatedAt = new Date().toISOString();
 /* Store the latest events and update timestamp */
 await kv.set(["events", "meta"], { updatedAt });
 
-// Delete old events first
+/* Clear existing events */
 for await (const entry of kv.list({ prefix: ["events", "item"] })) {
   await kv.delete(entry.key);
 }
 
-// Store events individually
+/* Save each event */
 await Promise.all(
   events.map((event, i) =>
     kv.set(["events", "item", i], event)
