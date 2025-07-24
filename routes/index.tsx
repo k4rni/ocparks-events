@@ -1,5 +1,4 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { fetchEvents } from "../utils/events.ts";
 import { Event } from "../utils/types.ts";
 import Navbar from "../components/Navbar.tsx";
 import Footer from "../components/Footer.tsx";
@@ -10,15 +9,29 @@ type Data = {
   totalPages: number;
 };
 
+/**
+ * Fetches events from the KV store and paginates them.
+ * @param req - The request object.
+ * @param ctx - The context object.
+ * @return A response containing the paginated events.
+ */
 export const handler: Handlers<Data> = {
   async GET(req, ctx) {
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get("page") || "1");
     const perPage = 10;
 
-    const events = await fetchEvents();
-    const totalPages = Math.ceil(events.length / perPage);
-    const paginatedEvents = events.slice((page - 1) * perPage, page * perPage);
+    const kv = await Deno.openKv();
+
+    const allEvents: Event[] = [];
+    for await (const entry of kv.list<Event>({ prefix: ["events", "item"] })) {
+      allEvents.push(entry.value);
+    }
+
+    allEvents.sort((a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime());
+
+    const totalPages = Math.ceil(allEvents.length / perPage);
+    const paginatedEvents = allEvents.slice((page - 1) * perPage, page * perPage);
 
     return ctx.render({
       events: paginatedEvents,
@@ -46,9 +59,7 @@ export default function Home({ data }: PageProps<Data>) {
               <div class="column-middle">
                 <h2>{event.title}</h2>
                 <p class="description">{event.description}</p>
-                <p class="info">
-                  Location {event.location}
-                </p>
+                <p class="info">Location {event.location}</p>
                 <p class="info">Date/Time {event.datetime}</p>
               </div>
 

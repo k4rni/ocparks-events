@@ -43,30 +43,6 @@ function decodeHtmlEntities(str: string): string {
 }
 
 /**
- * Fetches event tags using tinyllama (small learning model).
- * @param description - The event description to analyze.
- * @return An array of tags extracted from the description.
- */
-async function fetchTagsFromLLM(description: string): Promise<string[]> {
-  try {
-    const res = await fetch(
-      "https://huggingface.co/spaces/YOUR_USERNAME/tinyllama-event-tagger/tag",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ description }),
-      },
-    );
-
-    const data = await res.json();
-    return Array.isArray(data.tags) ? data.tags : [];
-  } catch (err) {
-    console.error("Tagging error:", err);
-    return [];
-  }
-}
-
-/**
  * Fetches events from the OC Parks events page.
  * @return A promise that resolves to an array of Event objects.
  */
@@ -106,8 +82,6 @@ export async function fetchEvents() {
               image: "Unknown image",
             };
 
-          const tags = await fetchTagsFromLLM(details.description);
-
           return {
             title: decodeHtmlEntities(event.title ?? "Unknown title"),
             datetime: formatEventDateRange(event.start, event.end),
@@ -115,7 +89,6 @@ export async function fetchEvents() {
             location: details.location,
             description: details.description,
             image: details.image,
-            tags,
           };
         }),
     );
