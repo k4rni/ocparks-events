@@ -2,6 +2,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import { Event } from "../utils/types.ts";
 import Navbar from "../components/Navbar.tsx";
 import Footer from "../components/Footer.tsx";
+import { fetchEvents } from "../utils/events.ts";
 
 type Data = {
   events: Event[];
@@ -23,15 +24,32 @@ export const handler: Handlers<Data> = {
 
     const kv = await Deno.openKv();
 
+    const firstEntry = await kv.list({ prefix: ["events", "item"] }).next();
+    if (firstEntry.done) {
+      console.log("KV empty. Fetching and storing events...");
+      const events = await fetchEvents();
+
+      for (const [index, event] of events.entries()) {
+        await kv.set(["events", "item", index], event);
+      }
+
+      console.log(`Stored ${events.length} events.`);
+    }
+
     const allEvents: Event[] = [];
     for await (const entry of kv.list<Event>({ prefix: ["events", "item"] })) {
       allEvents.push(entry.value);
     }
 
-    allEvents.sort((a, b) => new Date(a.datetime).getTime() - new Date(b.datetime).getTime());
+    allEvents.sort((a, b) =>
+      new Date(a.datetime).getTime() - new Date(b.datetime).getTime()
+    );
 
     const totalPages = Math.ceil(allEvents.length / perPage);
-    const paginatedEvents = allEvents.slice((page - 1) * perPage, page * perPage);
+    const paginatedEvents = allEvents.slice(
+      (page - 1) * perPage,
+      page * perPage,
+    );
 
     return ctx.render({
       events: paginatedEvents,
