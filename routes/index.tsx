@@ -80,6 +80,13 @@ export default function Home({ data }: PageProps<Data>) {
                 <p class="description">{event.description}</p>
                 <p class="info">Location {event.location}</p>
                 <p class="info">Date/Time {event.datetime}</p>
+                {event.tags && event.tags.length > 0 && (
+                  <div class="tags">
+                    {event.tags.map((tag) => (
+                      <span class="tag" key={tag}>{tag}</span>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div class="column-right">
