@@ -1,3 +1,4 @@
+/// <reference lib="deno.unstable" />
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { Event } from "../utils/types.ts";
 import Navbar from "../components/Navbar.tsx";
