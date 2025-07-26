@@ -74,7 +74,11 @@ async function fetchTags(text: string): Promise<string[]> {
     }
 
     const json = await res.json();
-    return json.tags || [];
+
+    const result = json.tags || [];
+    console.log(result);
+    return result;
+    // return json.tags || [];
   } catch (error) {
     console.error("Error tagging event:", error);
     return [];
@@ -138,7 +142,7 @@ export async function fetchEvents() {
           if (cached.value && cached.value.hash === hash) {
             tags = cached.value.tags;
           } else {
-            tags = await fetchTags(fullText);
+            tags = await fetchTags(event.title);
             await kv.set(kvKey, { tags, hash });
           }
 
