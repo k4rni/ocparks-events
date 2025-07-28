@@ -14,9 +14,7 @@ for await (const entry of kv.list({ prefix: ["events", "item"] })) {
 
 /* Save each event */
 await Promise.all(
-  events.map((event, i) =>
-    kv.set(["events", "item", i], event)
-  )
+  events.map((event, i) => kv.set(["events", "item", i], event)),
 );
 
 console.log(`Saved ${events.length} events at ${updatedAt}`);
