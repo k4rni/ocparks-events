@@ -76,10 +76,6 @@ export default function Home({ data }: PageProps<Data>) {
               </div>
 
               <div class="column-middle">
-                <h2>{event.title}</h2>
-                <p class="description">{event.description}</p>
-                <p class="info">Location {event.location}</p>
-                <p class="info">Date/Time {event.datetime}</p>
                 {event.tags && event.tags.length > 0 && (
                   <div class="tags">
                     {event.tags.map((tag) => (
@@ -87,10 +83,22 @@ export default function Home({ data }: PageProps<Data>) {
                     ))}
                   </div>
                 )}
+                <h2>{event.title}</h2>
+                <p class="description">{event.description}</p>
+                <p class="info">Location {event.location}</p>
+                <p class="info">Date/Time {event.datetime}</p>
               </div>
 
               <div class="column-right">
-                {event.url && <a href={event.url}>View Event</a>}
+                {
+                  <a
+                    href={`https://ocparks.com/${event.url}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    External Link
+                  </a>
+                }
               </div>
             </li>
           ))}

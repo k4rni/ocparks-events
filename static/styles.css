@@ -58,13 +58,14 @@ h1 {
 
 .info {
   font-weight: 400;
-  font-size: 15px;
-  margin: 0.5em 0;
+  font-size: 14px;
+  margin: 0;
+  margin-bottom: 0.25em;
 }
 
 .description {
   font-weight: 300;
-  font-size: 15px;
+  font-size: 14px;
   max-height: 40px;
   width: 600px;
   overflow: hidden;
@@ -73,6 +74,7 @@ h1 {
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   margin: 0;
+  margin-bottom: 0.5em;
 }
 
 .column-middle {
@@ -82,13 +84,26 @@ h1 {
   width: 600px;
 }
 
+.tag {
+  color: black;
+  border: black solid 1px;
+  border-radius: 100px;
+  background-color: white;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  margin-right: 0.5em;
+  display: inline-block;
+  margin-bottom: 0.5em;
+}
+
 .event-card a {
   color: black;
   border: black solid 1px;
   border-radius: 100px;
+  background-color: white;
   padding: 0.5rem 1rem;
   text-decoration: none;
-  margin-right: 3em;
+  margin: 0 1em 0 0.25em;
 }
 
 .pagination {
