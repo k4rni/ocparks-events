@@ -146,15 +146,20 @@ h1 {
     width: 100%;
   }
 
-  /* .event-card img {
-    width: 100%;
-    height: auto;
-  } */
+  .event-card a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    margin-bottom: 1em;
+  }
 
-  /* .description {
-    max-height: none;
-    -webkit-line-clamp: unset;
-  } */
+  .column-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
 }
 
 @media (max-width: 480px) {
