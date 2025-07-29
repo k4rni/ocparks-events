@@ -123,3 +123,55 @@ h1 {
 .pagination a:hover {
   background-color: #ddd;
 }
+
+@media (max-width: 1200px) {
+  h1 {
+    font-size: 36px;
+    width: 60%;
+  }
+
+  .event-card {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    width: 100%;
+  }
+
+  .column-middle {
+    padding: 0 1em 1em 1em;
+    width: 300px;
+  }
+
+  .description {
+    width: 100%;
+  }
+
+  .event-card a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    margin-bottom: 1em;
+  }
+
+  .column-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 28px;
+    width: 100%;
+    margin: 1rem;
+  }
+
+  .tag,
+  .event-card a {
+    font-size: 14px;
+    padding: 0.4rem 0.8rem;
+  }
+}
