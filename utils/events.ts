@@ -113,7 +113,7 @@ export async function fetchEvents() {
 
     const events = await Promise.all(
       result.events
-        .filter((e: Event) => new Date(e.end) >= now)
+        .filter((e: Event) => new Date(e.start) >= now)
         .sort((a: Event, b: Event) =>
           new Date(a.start).getTime() - new Date(b.start).getTime()
         )
