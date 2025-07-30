@@ -10,9 +10,16 @@ const kv = await Deno.openKv(
 const events = await fetchEvents();
 const updatedAt = new Date().toISOString();
 
-// Delete existing events (but only the ones under ["events", "item"])
-for await (const entry of kv.list({ prefix: ["events", "item"] })) {
-  await kv.delete(entry.key);
+// Clean up old events without deleting the entire KV
+for await (
+  const entry of kv.list<{ datetime: string }>({ prefix: ["events", "item"] })
+) {
+  const eventDate = new Date(entry.value.datetime);
+  const now = new Date();
+
+  if (eventDate < now) {
+    await kv.delete(entry.key);
+  }
 }
 
 // Save metadata (optional, but good for debugging or UI display)

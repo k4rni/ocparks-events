@@ -18,7 +18,6 @@ export const handler: Handlers = {
       allEvents.push(entry.value);
     }
 
-    // If KV is empty, populate it
     if (allEvents.length === 0 && !initializing) {
       initializing = true;
       console.log("KV empty. Fetching events...");

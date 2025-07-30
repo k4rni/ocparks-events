@@ -77,9 +77,7 @@ async function fetchTags(text: string): Promise<string[]> {
     const json = await res.json();
 
     const result = json.tags || [];
-    console.log(result);
     return result;
-    // return json.tags || [];
   } catch (error) {
     console.error("Error tagging event:", error);
     return [];
@@ -111,10 +109,15 @@ export async function fetchEvents() {
     ) || {};
 
     const now = new Date();
+    const in30Days = new Date();
+    in30Days.setDate(now.getDate() + 30);
 
     const events = await Promise.all(
       result.events
-        .filter((e: Event) => new Date(e.start) >= now)
+        .filter((e: Event) => {
+          const startDate = new Date(e.start);
+          return startDate >= now && startDate <= in30Days;
+        })
         .sort((a: Event, b: Event) =>
           new Date(a.start).getTime() - new Date(b.start).getTime()
         )
