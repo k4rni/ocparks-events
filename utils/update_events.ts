@@ -5,7 +5,7 @@ const events = await fetchEvents();
 const updatedAt = new Date().toISOString();
 
 // Clear all existing event data
-for await (const entry of kv.list({ prefix: ["events"] })) {
+for await (const entry of kv.list({ prefix: [] })) {
   await kv.delete(entry.key);
 }
 
