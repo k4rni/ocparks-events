@@ -8,7 +8,7 @@
     "build": "deno run -A dev.ts build",
     "preview": "deno run -A main.ts",
     "update": "deno run -A -r https://fresh.deno.dev/update .",
-    "update_events": "deno run -A update_events.ts"
+    "update_events": "deno run -A --unstable-kv update_events.ts"
   },
   "deploy": {
     "schedules": [
