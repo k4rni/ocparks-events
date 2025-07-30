@@ -1,3 +1,4 @@
+/// <reference lib="deno.unstable" />
 import { DOMParser } from "jsr:@b-fuze/deno-dom";
 import { Event } from "./types.ts";
 import { fetchEventDetails } from "./links.ts";
