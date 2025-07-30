@@ -5,6 +5,7 @@
 import * as $_404 from "./routes/_404.tsx";
 import * as $_app from "./routes/_app.tsx";
 import * as $api_data from "./routes/api/data.ts";
+import * as $api_events from "./routes/api/events.ts";
 import * as $index from "./routes/index.tsx";
 import * as $EventList from "./islands/EventList.tsx";
 import type { Manifest } from "$fresh/server.ts";
@@ -14,6 +15,7 @@ const manifest = {
     "./routes/_404.tsx": $_404,
     "./routes/_app.tsx": $_app,
     "./routes/api/data.ts": $api_data,
+    "./routes/api/events.ts": $api_events,
     "./routes/index.tsx": $index,
   },
   islands: {
