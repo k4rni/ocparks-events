@@ -1,3 +1,5 @@
+/// <reference lib="deno.unstable" />
+import "https://deno.land/std@0.224.0/dotenv/load.ts";
 import { fetchEvents } from "./events.ts";
 
 const kv = await Deno.openKv(
