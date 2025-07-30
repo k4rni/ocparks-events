@@ -10,6 +10,11 @@ const kv = await Deno.openKv(
 const events = await fetchEvents();
 const updatedAt = new Date().toISOString();
 
+// Delete everything in deno kv database
+// for await (const entry of kv.list({ prefix: ["events", "item"] })) {
+//   await kv.delete(entry.key);
+// }
+
 // Clean up old events without deleting the entire KV
 for await (
   const entry of kv.list<{ datetime: string }>({ prefix: ["events", "item"] })

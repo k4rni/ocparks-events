@@ -10,6 +10,10 @@ export const handler: Handlers = {
     const url = new URL(req.url);
     const page = parseInt(url.searchParams.get("page") || "1");
     const perPage = parseInt(url.searchParams.get("perPage") || "10");
+    const tagsParam = url.searchParams.get("tags");
+    const filterTags = tagsParam
+      ? tagsParam.split(",").map((t) => t.trim().toLowerCase())
+      : null;
 
     const kv = await Deno.openKv();
     const allEvents: Event[] = [];
@@ -30,11 +34,17 @@ export const handler: Handlers = {
       console.log(`Stored ${events.length} events in KV.`);
     }
 
-    allEvents.sort((a, b) =>
+    const filteredEvents = filterTags
+      ? allEvents.filter((event) =>
+        event.tags?.some((tag) => filterTags.includes(tag.toLowerCase()))
+      )
+      : allEvents;
+
+    filteredEvents.sort((a, b) =>
       new Date(a.datetime).getTime() - new Date(b.datetime).getTime()
     );
 
-    const paginatedEvents = allEvents.slice(
+    const paginatedEvents = filteredEvents.slice(
       (page - 1) * perPage,
       page * perPage,
     );
@@ -42,7 +52,7 @@ export const handler: Handlers = {
     return new Response(
       JSON.stringify({
         events: paginatedEvents,
-        totalPages: Math.ceil(allEvents.length / perPage),
+        totalPages: Math.ceil(filteredEvents.length / perPage),
       }),
       {
         headers: { "Content-Type": "application/json" },
