@@ -7,6 +7,23 @@ export default function App({ Component }: PageProps) {
       <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+          property="og:title"
+          content="OC Parks Events"
+        />
+        <meta
+          property="og:description"
+          content="A web scraper of the ocparks page to filter and provide you a digestible form of event data"
+        />
+        <meta
+          property="og:image"
+          content="https://ocparks-events.deno.dev/meta-image.png"
+        />
+        <meta
+          property="og:url"
+          content="https://ocparks-events.deno.dev/"
+        />
+        <meta property="og:type" content="website" />
         <title>ocparks-events</title>
         <link
           rel="apple-touch-icon"
