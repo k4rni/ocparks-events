@@ -15,7 +15,7 @@
   "deploy": {
     "schedules": [
       {
-        "cron": "*/10 * * * *",
+        "cron": "0 * * * *",
         "task": "update_events"
       }
     ]
