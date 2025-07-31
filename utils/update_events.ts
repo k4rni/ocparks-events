@@ -23,7 +23,7 @@ const events = await fetchEvents();
 const updatedAt = new Date().toISOString();
 
 // Delete everything in deno kv database
-// for await (const entry of kv.list({ prefix: ["events", "item"] })) {
+// for await (const entry of kv.list({ prefix: [] })) {
 //   await kv.delete(entry.key);
 // }
 
