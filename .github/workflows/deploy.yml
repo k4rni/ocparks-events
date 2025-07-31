@@ -32,5 +32,3 @@ jobs:
           project: "ocparks-events"
           entrypoint: "main.ts"
           root: "."
-          
-          
