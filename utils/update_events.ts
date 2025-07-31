@@ -24,8 +24,17 @@ const updatedAt = new Date().toISOString();
 
 // Delete everything in deno kv database
 // for await (const entry of kv.list({ prefix: [] })) {
+//   console.log("Deleting", entry.key);
 //   await kv.delete(entry.key);
 // }
+
+// console.log("KV store cleared.");
+
+// Remove any hashing data from previous runs
+for await (const entry of kv.list({ prefix: ["event"] })) {
+  console.log("Deleting old event metadata:", entry.key);
+  await kv.delete(entry.key);
+}
 
 // Clean up old events without deleting the entire KV
 for await (
