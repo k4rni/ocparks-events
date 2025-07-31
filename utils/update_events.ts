@@ -2,21 +2,21 @@
 import "https://deno.land/std@0.224.0/dotenv/load.ts";
 import { fetchEvents } from "./events.ts";
 
-const kvAccessToken = Deno.env.get("KV_ACCESS_TOKEN");
+const isDeploy = Boolean(Deno.env.get("DENO_DEPLOYMENT_ID"));
 
-if (!kvAccessToken) {
-  throw new Error("KV_ACCESS_TOKEN is not defined");
+let kv;
+
+if (isDeploy) {
+  kv = await Deno.openKv();
+} else {
+  const kvAccessToken = Deno.env.get("KV_ACCESS_TOKEN");
+  if (!kvAccessToken) {
+    throw new Error("KV_ACCESS_TOKEN is not defined");
+  }
+  kv = await Deno.openKv(
+    `https://api.deno.com/databases/8605b5e4-6a3c-4d73-ba57-34c20030f83f/connect?access_token=${kvAccessToken}`,
+  );
 }
-
-const kv = await Deno.openKv(
-  `https://api.deno.com/databases/8605b5e4-6a3c-4d73-ba57-34c20030f83f/connect?access_token=${kvAccessToken}`,
-);
-
-let count = 0;
-for await (const _ of kv.list({ prefix: ["events", "item"] })) {
-  count++;
-}
-console.log(`📦 Events in KV after update: ${count}`);
 
 // Fetch only future events (already filtered inside fetchEvents)
 const events = await fetchEvents();
@@ -39,7 +39,7 @@ for await (
   }
 }
 
-// Save metadata (optional, but good for debugging or UI display)
+// Save metadata
 await kv.set(["events", "meta"], { updatedAt });
 
 // Save new events
