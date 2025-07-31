@@ -8,6 +8,7 @@ import * as $api_data from "./routes/api/data.ts";
 import * as $api_events from "./routes/api/events.ts";
 import * as $index from "./routes/index.tsx";
 import * as $EventList from "./islands/EventList.tsx";
+import * as $ScrollToTop from "./islands/ScrollToTop.tsx";
 import type { Manifest } from "$fresh/server.ts";
 
 const manifest = {
@@ -20,6 +21,7 @@ const manifest = {
   },
   islands: {
     "./islands/EventList.tsx": $EventList,
+    "./islands/ScrollToTop.tsx": $ScrollToTop,
   },
   baseUrl: import.meta.url,
 } satisfies Manifest;

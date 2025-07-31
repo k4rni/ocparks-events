@@ -144,7 +144,18 @@ h1 {
   background-color: black;
 }
 
-@media (max-width: 1200px) {
+.scroll-button {
+  position: fixed;
+  bottom: 20px;
+  right: 10px;
+  background: none;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+@media (max-width: 1280px) {
   h1 {
     font-size: 36px;
     width: 60%;
@@ -185,6 +196,9 @@ h1 {
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.5rem;
+  }
+  .scroll-button {
+    display: none;
   }
 }
 
