@@ -2,8 +2,14 @@
 import "https://deno.land/std@0.224.0/dotenv/load.ts";
 import { fetchEvents } from "./events.ts";
 
+const kvAccessToken = Deno.env.get("KV_ACCESS_TOKEN");
+
+if (!kvAccessToken) {
+  throw new Error("KV_ACCESS_TOKEN is not defined");
+}
+
 const kv = await Deno.openKv(
-  "https://api.deno.com/databases/8605b5e4-6a3c-4d73-ba57-34c20030f83f/connect",
+  `https://api.deno.com/databases/8605b5e4-6a3c-4d73-ba57-34c20030f83f/connect?access_token=${kvAccessToken}`,
 );
 
 // Fetch only future events (already filtered inside fetchEvents)
