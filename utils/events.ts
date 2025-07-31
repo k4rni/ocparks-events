@@ -112,7 +112,7 @@ export async function fetchEvents() {
     const in30Days = new Date();
     in30Days.setDate(now.getDate() + 30);
 
-    const events = await Promise.all(
+    const rawEvents = await Promise.all(
       result.events
         .filter((e: Event) => {
           const startDate = new Date(e.start);
@@ -147,7 +147,6 @@ export async function fetchEvents() {
             tags = cached.value.tags;
           } else {
             tags = await fetchTags(event.title);
-            await kv.set(kvKey, { tags, hash });
           }
 
           return {
@@ -162,7 +161,19 @@ export async function fetchEvents() {
         }),
     );
 
-    return events;
+    const seen = new Set<string>();
+    const uniqueEvents = rawEvents.filter((event) => {
+      const key = JSON.stringify([event.title, event.datetime, event.location]);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+
+    console.log(
+      `Removed ${rawEvents.length - uniqueEvents.length} duplicate events.`,
+    );
+
+    return uniqueEvents;
   } catch (err) {
     console.error("Error fetching events:", err);
     return [];
