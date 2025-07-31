@@ -23,21 +23,21 @@ const events = await fetchEvents();
 const updatedAt = new Date().toISOString();
 
 // Delete everything in deno kv database
-for await (const entry of kv.list({ prefix: ["events", "item"] })) {
-  await kv.delete(entry.key);
-}
+// for await (const entry of kv.list({ prefix: ["events", "item"] })) {
+//   await kv.delete(entry.key);
+// }
 
 // Clean up old events without deleting the entire KV
-// for await (
-//   const entry of kv.list<{ datetime: string }>({ prefix: ["events", "item"] })
-// ) {
-//   const eventDate = new Date(entry.value.datetime);
-//   const now = new Date();
+for await (
+  const entry of kv.list<{ datetime: string }>({ prefix: ["events", "item"] })
+) {
+  const eventDate = new Date(entry.value.datetime);
+  const now = new Date();
 
-//   if (eventDate < now) {
-//     await kv.delete(entry.key);
-//   }
-// }
+  if (eventDate < now) {
+    await kv.delete(entry.key);
+  }
+}
 
 // Save metadata
 await kv.set(["events", "meta"], { updatedAt });
