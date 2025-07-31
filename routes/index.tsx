@@ -1,6 +1,7 @@
 import Navbar from "../components/Navbar.tsx";
 import Footer from "../components/Footer.tsx";
 import EventList from "../islands/EventList.tsx";
+import ScrollToTop from "../islands/ScrollToTop.tsx";
 
 export default function Home() {
   return (
@@ -10,6 +11,7 @@ export default function Home() {
         <h1>Discover and Explore OC Parks Events with Smart Filtering</h1>
         <EventList />
       </main>
+      <ScrollToTop />
       <Footer />
     </div>
   );
