@@ -6,6 +6,7 @@
 
 import "$std/dotenv/load.ts";
 
+import "./utils/update_events.ts";
 import { start } from "$fresh/server.ts";
 import manifest from "./fresh.gen.ts";
 import config from "./fresh.config.ts";
