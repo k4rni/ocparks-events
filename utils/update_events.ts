@@ -12,6 +12,12 @@ const kv = await Deno.openKv(
   `https://api.deno.com/databases/8605b5e4-6a3c-4d73-ba57-34c20030f83f/connect?access_token=${kvAccessToken}`,
 );
 
+let count = 0;
+for await (const _ of kv.list({ prefix: ["events", "item"] })) {
+  count++;
+}
+console.log(`📦 Events in KV after update: ${count}`);
+
 // Fetch only future events (already filtered inside fetchEvents)
 const events = await fetchEvents();
 const updatedAt = new Date().toISOString();
