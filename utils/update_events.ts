@@ -30,12 +30,6 @@ const updatedAt = new Date().toISOString();
 
 // console.log("KV store cleared.");
 
-// Remove any hashing data from previous runs
-for await (const entry of kv.list({ prefix: ["event"] })) {
-  console.log("Deleting old event metadata:", entry.key);
-  await kv.delete(entry.key);
-}
-
 // Clean up old events without deleting the entire KV
 for await (
   const entry of kv.list<{ datetime: string }>({ prefix: ["events", "item"] })
@@ -47,6 +41,12 @@ for await (
     await kv.delete(entry.key);
   }
 }
+
+// Remove any hashing data from previous runs
+// for await (const entry of kv.list({ prefix: ["event"] })) {
+//   console.log("Deleting old event metadata:", entry.key);
+//   await kv.delete(entry.key);
+// }
 
 // Save metadata
 await kv.set(["events", "meta"], { updatedAt });
