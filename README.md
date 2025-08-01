@@ -7,7 +7,21 @@
 
 Check it out here: https://ocparks-events.deno.dev/
 
-![Screenshot of the OC Parks Events landing page](/static/progress_pics/image-5.png)
+![Screenshot of the OC Parks Events landing page](/static/progress_pics/image-6.png)
+
+## Purpose
+
+The goal of this project is to promote greater community involvement and
+volunteerism in regional parks. In today’s economic climate, environmental
+concerns often receive less attention, making it harder to support and protect
+our natural spaces. Unfortunately, the current
+[ocparks.com/events](https://ocparks.com/events) page is difficult to navigate,
+which may discourage participation. This project aims to simplify access to
+event information through a more user-friendly website, making it easier for
+people to engage and give back to their local community.
+
+If you are interested, but afraid to partake in any of these events, I want to
+provide an easy outlet for others to engage in helping out.
 
 ## Features
 
@@ -22,29 +36,13 @@ Check it out here: https://ocparks-events.deno.dev/
   tags
 - Features a responsive design optimized for both desktop and mobile devices
 
-## Development
+## Check out more
 
-Requirements:
-[Deno](https://docs.deno.com/runtime/getting_started/installation/) must be
-installed
+Interested in contributing to make this website better? Feel free to check out
+`CONTRIBUTING.md` to learn more!
 
-```
-git clone https://github.com/k4rni/ocparks-events.git
-cd ocparks-events
-```
-
-## Building
-
-To create a dev version of this app:
-
-```
-deno task start
-```
-
-## Event Tagger
-
-Check out the machine learning model here:
-https://github.com/k4rni/events-tagger
+Want to understand the structure of this project? Take a look at
+`ARCHITECTURE.md` to get a better understanding!
 
 ---
 
