@@ -2,6 +2,22 @@
 import { Handlers } from "$fresh/server.ts";
 import { Event } from "../../utils/types.ts";
 
+async function openKv() {
+  const isDeploy = Boolean(Deno.env.get("DENO_DEPLOYMENT_ID"));
+  if (isDeploy) {
+    return await Deno.openKv();
+  }
+
+  const kvAccessToken = Deno.env.get("KV_ACCESS_TOKEN");
+  if (!kvAccessToken) {
+    throw new Error("KV_ACCESS_TOKEN is not defined");
+  }
+
+  return await Deno.openKv(
+    `https://api.deno.com/databases/8605b5e4-6a3c-4d73-ba57-34c20030f83f/connect?access_token=${kvAccessToken}`,
+  );
+}
+
 export const handler: Handlers = {
   async GET(req) {
     const url = new URL(req.url);
@@ -12,7 +28,7 @@ export const handler: Handlers = {
       ? tagsParam.split(",").map((t) => t.trim().toLowerCase())
       : null;
 
-    const kv = await Deno.openKv();
+    const kv = await openKv();
     const allEvents: Event[] = [];
 
     // Check if KV has been initialized
