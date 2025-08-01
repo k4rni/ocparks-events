@@ -147,7 +147,7 @@ export async function fetchEvents() {
             tags = cached.value.tags;
           } else {
             tags = await fetchTags(event.title);
-            await kv.set(kvKey, { tags, hash });
+            // await kv.set(kvKey, { tags, hash });
           }
 
           return {
