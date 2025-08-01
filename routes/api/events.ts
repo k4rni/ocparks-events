@@ -1,9 +1,6 @@
 /// <reference lib="deno.unstable" />
 import { Handlers } from "$fresh/server.ts";
-import { fetchEvents } from "../../utils/events.ts";
 import { Event } from "../../utils/types.ts";
-
-let initializing = false;
 
 export const handler: Handlers = {
   async GET(req) {
@@ -18,32 +15,43 @@ export const handler: Handlers = {
     const kv = await Deno.openKv();
     const allEvents: Event[] = [];
 
+    // Check if KV has been initialized
+    const meta = await kv.get<{ updatedAt: string }>(["events", "meta"]);
+    const hasBeenPopulated = Boolean(meta.value?.updatedAt);
+
+    // Load events from KV
     for await (const entry of kv.list<Event>({ prefix: ["events", "item"] })) {
       allEvents.push(entry.value);
     }
 
-    if (allEvents.length === 0 && !initializing) {
-      initializing = true;
-      console.log("KV empty. Fetching events...");
-      const events = await fetchEvents();
-      for (const [index, event] of events.entries()) {
-        await kv.set(["events", "item", index], event);
-        allEvents.push(event);
-      }
-      initializing = false;
-      console.log(`Stored ${events.length} events in KV.`);
+    // If KV appears empty, don’t overwrite or fetch
+    if (allEvents.length === 0 && !hasBeenPopulated) {
+      return new Response(
+        JSON.stringify({
+          events: [],
+          totalPages: 0,
+          message: "Event data is not yet available. Please try again soon.",
+        }),
+        {
+          headers: { "Content-Type": "application/json" },
+          status: 503,
+        },
+      );
     }
 
+    // Apply tag filter
     const filteredEvents = filterTags
       ? allEvents.filter((event) =>
         event.tags?.some((tag) => filterTags.includes(tag.toLowerCase()))
       )
       : allEvents;
 
+    // Sort chronologically
     filteredEvents.sort((a, b) =>
       new Date(a.datetime).getTime() - new Date(b.datetime).getTime()
     );
 
+    // Paginate
     const paginatedEvents = filteredEvents.slice(
       (page - 1) * perPage,
       page * perPage,
