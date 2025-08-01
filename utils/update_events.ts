@@ -34,7 +34,15 @@ for await (
   const eventDate = new Date(entry.value.datetime);
   const now = new Date();
 
-  if (eventDate < now) {
+  const eventDay = new Date(
+    eventDate.getFullYear(),
+    eventDate.getMonth(),
+    eventDate.getDate(),
+  );
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  if (eventDay < today) {
+    console.log(`Deleting outdated event:`, entry.key, entry.value.datetime);
     await kv.delete(entry.key);
   }
 }
