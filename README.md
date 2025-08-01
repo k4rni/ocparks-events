@@ -7,7 +7,7 @@
 
 Check it out here: https://ocparks-events.deno.dev/
 
-![Screenshot of the OC Parks Events landing page](/static/progress_pics/image-5.png)
+![Screenshot of the OC Parks Events landing page](/static/meta-image.png)
 
 ## Features
 
