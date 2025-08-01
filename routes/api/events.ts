@@ -1,9 +1,22 @@
 /// <reference lib="deno.unstable" />
 import { Handlers } from "$fresh/server.ts";
-import { fetchEvents } from "../../utils/events.ts";
 import { Event } from "../../utils/types.ts";
 
-let initializing = false;
+async function openKv() {
+  const isDeploy = Boolean(Deno.env.get("DENO_DEPLOYMENT_ID"));
+  if (isDeploy) {
+    return await Deno.openKv();
+  }
+
+  const kvAccessToken = Deno.env.get("KV_ACCESS_TOKEN");
+  if (!kvAccessToken) {
+    throw new Error("KV_ACCESS_TOKEN is not defined");
+  }
+
+  return await Deno.openKv(
+    `https://api.deno.com/databases/8605b5e4-6a3c-4d73-ba57-34c20030f83f/connect?access_token=${kvAccessToken}`,
+  );
+}
 
 export const handler: Handlers = {
   async GET(req) {
@@ -15,24 +28,14 @@ export const handler: Handlers = {
       ? tagsParam.split(",").map((t) => t.trim().toLowerCase())
       : null;
 
-    const kv = await Deno.openKv();
+    const kv = await openKv();
     const allEvents: Event[] = [];
 
     for await (const entry of kv.list<Event>({ prefix: ["events", "item"] })) {
       allEvents.push(entry.value);
     }
 
-    if (allEvents.length === 0 && !initializing) {
-      initializing = true;
-      console.log("KV empty. Fetching events...");
-      const events = await fetchEvents();
-      for (const [index, event] of events.entries()) {
-        await kv.set(["events", "item", index], event);
-        allEvents.push(event);
-      }
-      initializing = false;
-      console.log(`Stored ${events.length} events in KV.`);
-    }
+    // ✅ Removed fallback call to fetchEvents()
 
     const filteredEvents = filterTags
       ? allEvents.filter((event) =>
