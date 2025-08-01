@@ -37,16 +37,24 @@ for await (
   const eventDate = new Date(entry.value.datetime);
   const now = new Date();
 
-  if (eventDate < now) {
+  const eventDay = new Date(
+    eventDate.getFullYear(),
+    eventDate.getMonth(),
+    eventDate.getDate(),
+  );
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+  if (eventDay < today) {
+    console.log(`Deleting outdated event:`, entry.key, entry.value.datetime);
     await kv.delete(entry.key);
   }
 }
 
 // Remove any hashing data from previous runs
-// for await (const entry of kv.list({ prefix: ["event"] })) {
-//   console.log("Deleting old event metadata:", entry.key);
-//   await kv.delete(entry.key);
-// }
+for await (const entry of kv.list({ prefix: ["event"] })) {
+  console.log("Deleting old event metadata:", entry.key);
+  await kv.delete(entry.key);
+}
 
 // Save metadata
 await kv.set(["events", "meta"], { updatedAt });
@@ -56,4 +64,4 @@ await Promise.all(
   events.map((event, i) => kv.set(["events", "item", i], event)),
 );
 
-console.log(`✅ Saved ${events.length} future events at ${updatedAt}`);
+console.log(`Saved ${events.length} future events at ${updatedAt}`);
